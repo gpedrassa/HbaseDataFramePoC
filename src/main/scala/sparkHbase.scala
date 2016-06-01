@@ -68,6 +68,8 @@ object sparkHbase {
     case class Employee(city: String, name: String, designation: String, salary: Int)
 
     val rddScan = hbaseContext.hbaseScanRDD(tableName, scan)
+
+    val dataFrame = rddScan.map(tuple => tuple._2).map(values => Employee( new String(values.get(0)._3.map(_.toChar)), new String(values.get(1)._3.map(_.toChar)),new String(values.get(2)._3.map(_.toChar)),new String(values.get(3)._3.map(_.toChar)).toInt ) ).toDF()
   }
 
   def insertDataHBaseContext(): Unit = {
